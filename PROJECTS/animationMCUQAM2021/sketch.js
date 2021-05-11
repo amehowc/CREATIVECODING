@@ -31,15 +31,19 @@ function setup() {
   Runner.run(runner, engine);
 
   ground = Bodies.rectangle(width / 2, height + 25, width, 50, {
+    friction: 0.1,
     isStatic: true,
   });
   let leftBound = Bodies.rectangle(-25, height / 2, 50, height, {
+    friction: 0.1,
     isStatic: true,
   });
   let rightBound = Bodies.rectangle(width + 25, height / 2, 50, height, {
+    friction: 0.1,
     isStatic: true,
   });
   ceiling = Bodies.rectangle(width / 2, -25, width, 50, {
+    friction: 0.1,
     isStatic: true,
   });
   const mouse = Mouse.create(canvas.elt);
@@ -47,6 +51,7 @@ function setup() {
   let moptions = {
     mouse: mouse,
     constrain: {
+      friction: 0.1,
       stiffness: 0.15,
     },
   };
@@ -61,7 +66,7 @@ function setup() {
   b;
   Engine.run(engine);
 
-  world.gravity.y = 0.5;
+  world.gravity.y = 0.0;
   world.gravity.x = 0;
 
   for (let shape in allShapesBounds) {
@@ -70,7 +75,7 @@ function setup() {
     var options = {
       friction: 0.1,
       restitution: 0.0,
-      isStatic: true,
+      isStatic: false,
     };
     actual = getRelativePoint(actual, width, windowWidth - margins * 2, height, windowHeight- margins * 2);
     render = getRelativePoint(render, width, windowWidth - margins * 2, height, windowHeight- margins * 2);
@@ -88,11 +93,11 @@ function generarteNewBox() {
   // console.log(boxes);
 }
 
-function mousePressed() {
-  if (boxes.length < 20) {
-    generarteNewBox();
-  }
-}
+// function mousePressed() {
+//   if (boxes.length < 20) {
+//     generarteNewBox();
+//   }
+// }
 
 function draw() {
   clear();
