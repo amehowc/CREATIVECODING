@@ -24,7 +24,7 @@ let b;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
-  margins = width/6
+  margins = 200
   engine = Engine.create();
   world = engine.world;
   var runner = Runner.create();
@@ -72,8 +72,8 @@ function setup() {
       restitution: 0.0,
       isStatic: true,
     };
-    actual = getRelativePoint(actual, windowWidth - margins * 2, windowHeight);
-    render = getRelativePoint(render, windowWidth - margins * 2, windowHeight);
+    actual = getRelativePoint(actual, width, windowWidth - margins * 2, height, windowHeight- margins * 2);
+    render = getRelativePoint(render, width, windowWidth - margins * 2, height, windowHeight- margins * 2);
     logoShapes.push(new LogoShape(actual, render, options));
   }
 }
@@ -101,7 +101,7 @@ function draw() {
   push();
   logoShapes.forEach((shape) => shape.show());
 
-  //debug view for collisions
+  // debug view for collisions
   // fill(0);
   // logoShapes.forEach((shape) => {
   //

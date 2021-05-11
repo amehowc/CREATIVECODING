@@ -1,22 +1,21 @@
-const getRelativePoint = (shape, ratioWidth, ratioHeight) => {
+const getRelativePoint = (shape, canvasWidth , ratioWidth, canvasHeight, ratioHeight) => {
+  const adjustRatio = max(ratioWidth,ratioHeight)
   const originRatio = 600;
-  const adjustPosY = (150 / originRatio) * ratioHeight;
-  const centerX = ratioWidth >= originRatio ? -(ratioWidth - originRatio) / 2 : (ratioWidth - originRatio) / 2
-  const centerY = Math.abs(ratioHeight - originRatio) / 2
+  const adjustYMargin = 150;
+
+  const centerX = (canvasWidth-ratioWidth)/2
+  const centerY = (canvasHeight-ratioHeight)/2
   const origin = shape.position;
-  origin.x = Math.round((origin.x / originRatio) * ratioWidth) - centerX;
+  origin.x = Math.round((origin.x / originRatio) * adjustRatio) + centerX;
   origin.y =
-    Math.round((origin.y / originRatio) * ratioWidth) - adjustPosY + centerY;
+    Math.round(((origin.y-adjustYMargin) / originRatio) * adjustRatio) + centerY
   const path = shape.path;
   const buffer = [];
   path.forEach((point, i) => {
     const x =
-      Math.round((point.x / originRatio) * ratioWidth) - origin.x - centerX;
+      Math.round((point.x / originRatio) * adjustRatio) - origin.x + centerX;
     const y =
-      Math.round((point.y / originRatio) * ratioWidth) -
-      origin.y -
-      adjustPosY +
-      centerY;
+      Math.round(((point.y-adjustYMargin) / originRatio) * adjustRatio) - origin.y + centerY;
     buffer[i] = { x: x, y: y };
   });
   shape.position = origin;
@@ -25,14 +24,7 @@ const getRelativePoint = (shape, ratioWidth, ratioHeight) => {
   return shape;
 };
 
-const getPointsOnArc = (
-  numPoints,
-  radius,
-  center,
-  start,
-  end,
-  reverse,
-) => {
+const getPointsOnArc = (numPoints, radius, center, start, end, reverse) => {
   let buffer = [];
 
   for (let i = 0; i < numPoints; i++) {
@@ -188,7 +180,7 @@ const allShapesBounds = {
 // shapes to render on screen, higher resolution
 const allShapesRender = {
   TOPMLEFT: {
-    position: {  x: 80, y: 234 },
+    position: { x: 80, y: 234 },
     path: [
       { x: 5, y: 175 },
       { x: 113, y: 165 },
