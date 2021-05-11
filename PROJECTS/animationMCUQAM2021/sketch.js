@@ -1,117 +1,132 @@
-var engine, world;
-var boxes = []
-var colors = "f6bd60-f7ede2-f5cac3-84a59d-f28482".split("-").map(a => "#" + a)
+let logoShapes = [];
+let boundaries = [];
+let boxes = [];
+let margins = 0;
 
-var arrow, chevron, star, horseShoe;
+const colors = "009F4D-003DA5-D22730-F04E98-FF6720"
+  .split("-")
+  .map((a) => "#" + a);
+
 let {
-    Engine,
-    Bodies,
-    World,
-    Vertices,
-    Common,
-    Runner,
-    Mouse,
-    MouseConstraint
-  } = Matter
+  Engine,
+  Bodies,
+  World,
+  Vertices,
+  Common,
+  Runner,
+  Mouse,
+  MouseConstraint,
+  Svg,
+} = Matter;
 
- let ground;
+let ground;
+let b;
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(0);
-
-  engine = Engine.create()
+  noStroke();
+  margins = width/6
+  engine = Engine.create();
   world = engine.world;
   var runner = Runner.create();
   Runner.run(runner, engine);
 
   ground = Bodies.rectangle(width / 2, height + 25, width, 50, {
-    isStatic: true
-  })
-  let leftBound = Bodies.rectangle(-25, height/2, 50, height, {
-    isStatic: true
-  })
-  let rightBound = Bodies.rectangle(width+25, height/2, 50, height, {
-    isStatic: true
-  })
-
+    isStatic: true,
+  });
+  let leftBound = Bodies.rectangle(-25, height / 2, 50, height, {
+    isStatic: true,
+  });
+  let rightBound = Bodies.rectangle(width + 25, height / 2, 50, height, {
+    isStatic: true,
+  });
+  ceiling = Bodies.rectangle(width / 2, -25, width, 50, {
+    isStatic: true,
+  });
   const mouse = Mouse.create(canvas.elt);
   mouse.pixelRatio = displayDensity();
   let moptions = {
     mouse: mouse,
     constrain: {
-      stiffness: 0.15
-    }
+      stiffness: 0.15,
+    },
   };
   mConstraint = MouseConstraint.create(engine, moptions);
   World.add(world, mConstraint);
+  boundaries.push(ground, leftBound, rightBound, ceiling);
 
-  // World.add(world, ground)
-  World.add(world, leftBound)
-  World.add(world, rightBound)
-  Engine.run(engine)
+  World.add(world, ground);
+  World.add(world, leftBound);
+  World.add(world, rightBound);
+  World.add(world, ceiling);
+  b;
+  Engine.run(engine);
 
-  world.gravity.y = 1;
+  world.gravity.y = 0.5;
   world.gravity.x = 0;
 
+  for (let shape in allShapesBounds) {
+    let actual = allShapesBounds[shape];
+    let render = allShapesRender[shape];
+    var options = {
+      friction: 0.1,
+      restitution: 0.0,
+      isStatic: true,
+    };
+    actual = getRelativePoint(actual, windowWidth - margins * 2, windowHeight);
+    render = getRelativePoint(render, windowWidth - margins * 2, windowHeight);
+    logoShapes.push(new LogoShape(actual, render, options));
+  }
 }
 
 function generarteNewBox() {
-  let {
-    Engine,
-    Bodies,
-    World,
-    Vertices,
-  } = Matter
-  let sz = random([40, 60, 80])
-  let boxA = Bodies.polygon(mouseX,mouseY,int(random(3,10)),sz)
-  //let boxA = Bodies.fromVertices(mouseX, mouseY, arrow);
-  boxA.color = random(colors)
-  boxes.push(boxA)
-  World.add(world, boxA)
-
-
+  let { Bodies, World } = Matter;
+  let sz = random([40, 60, 80]);
+  let box = Bodies.polygon(mouseX, mouseY, int(random(3, 10)), sz);
+  box.color = random(colors);
+  boxes.push(box);
+  World.add(world, box);
+  // console.log(boxes);
 }
 
 function mousePressed() {
-  if(boxes.length<50){
-  generarteNewBox()
+  if (boxes.length < 20) {
+    generarteNewBox();
   }
 }
 
 function draw() {
-  clear()
-  background(0)
-  stroke(0)
-  strokeWeight(1)
+  clear();
+  background(125);
+  Engine.update(engine);
+  push();
+  logoShapes.forEach((shape) => shape.show());
 
-  boxes.forEach((box,index)=>{
-    fill(box.color || 'white')
-    beginShape()
-      box.vertices.forEach((vertice)=>{
-        vertex(vertice.x, vertice.y)
-      })
-      endShape()
-      if(box.isOffScreen){
-      console.log('hey')
-      World.remove(world, box.body);
-      boxes.splice(i, 1);
-
-      }
-  })
-
-  // if (boxes.length > 100){
-  //   World.remove(world, ground)
-  // } else if (boxes.length<100 && !ground.bodies){
-  //   World.add(world, ground)
-  // }
-
-  push()
-  fill(255)
-  textSize(12)
-  translate(15,15)
-  text(str(boxes.length),0,0)
-  pop()
+  //debug view for collisions
+  // fill(0);
+  // logoShapes.forEach((shape) => {
+  //
+  //   beginShape();
+  //   for(let point of shape.body.vertices){
+  //     // console.log(point)
+  //     vertex(point.x,point.y)
+  //   }
+  //   endShape(CLOSE);
+  //   // console.log(shape);
+  // });
 
 
 
+  pop();
+  for (let box of boxes) {
+    fill(box.color || "white");
+    beginShape();
+    for (let vert of box.vertices) {
+      vertex(vert.x, vert.y);
+    }
+    endShape();
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

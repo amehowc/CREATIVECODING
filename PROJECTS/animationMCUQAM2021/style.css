@@ -5,3 +5,6 @@ html, body {
 canvas {
   display: block;
 }
+svg {
+  display: none;
+}
