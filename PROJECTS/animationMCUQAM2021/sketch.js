@@ -1,7 +1,6 @@
-let logoShapes = [];
-let boundaries = [];
-let boxes = [];
+let logoShapes = boundaries = boxes = imgs = [];
 let margins = 0;
+
 
 const colors = "009F4D-003DA5-D22730-F04E98-FF6720"
   .split("-")
@@ -21,8 +20,32 @@ let {
 
 let ground;
 let b;
+// let imgs = new Array(5).fill(0)
+
+const numImages = 5
+function preload(){
+  // was working, dont work anymore, issues seems from CrossOrigin
+  // imgs = new Array(5).fill(0)
+  // imgs.forEach((image,index)=>{
+  //   const slug = '0'+index+'.png'
+  //   const img = loadImage(`${slug}`)
+  //   imgs[index] = img;
+  //   })
+
+  img00 = loadImage('00.png')
+  img01 = loadImage('01.png')
+  img02 = loadImage('02.png')
+  img03 = loadImage('03.png')
+  img04 = loadImage('04.png')
+
+  imgs.push(img00,img01,img02,img03,img04)
+
+
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  imageMode(CENTER)
   noStroke();
   margins = 200
   engine = Engine.create();
@@ -63,7 +86,6 @@ function setup() {
   World.add(world, leftBound);
   World.add(world, rightBound);
   World.add(world, ceiling);
-  b;
   Engine.run(engine);
 
   world.gravity.y = 0.0;
@@ -82,21 +104,15 @@ function setup() {
     logoShapes.push(new LogoShape(actual, render, options));
   }
 }
-
-function generarteNewBox() {
-  let { Bodies, World } = Matter;
-  let sz = random([40, 60, 80]);
-  let box = Bodies.polygon(mouseX, mouseY, int(random(3, 10)), sz);
-  box.color = random(colors);
-  boxes.push(box);
-  World.add(world, box);
-  // console.log(boxes);
-}
-
-// function mousePressed() {
-//   if (boxes.length < 20) {
-//     generarteNewBox();
-//   }
+// To add a shape to the engine and to P5
+// function generarteNewBox() {
+//   let { Bodies, World } = Matter;
+//   let sz = random([40, 60, 80]);
+//   let box = Bodies.polygon(mouseX, mouseY, int(random(3, 10)), sz);
+//   box.color = random(colors);
+//   boxes.push(box);
+//   World.add(world, box);
+//   // console.log(boxes);
 // }
 
 function draw() {
@@ -104,7 +120,7 @@ function draw() {
   background(125);
   Engine.update(engine);
   push();
-  logoShapes.forEach((shape) => shape.show());
+  logoShapes.forEach((shape) => shape.show(imgs));
 
   // debug view for collisions
   // fill(0);
@@ -118,18 +134,8 @@ function draw() {
   //   endShape(CLOSE);
   //   // console.log(shape);
   // });
-
-
-
   pop();
-  for (let box of boxes) {
-    fill(box.color || "white");
-    beginShape();
-    for (let vert of box.vertices) {
-      vertex(vert.x, vert.y);
-    }
-    endShape();
-  }
+
 }
 
 function windowResized() {
