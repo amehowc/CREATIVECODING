@@ -1,3 +1,5 @@
+// august 2019
+
 let cols;
 function setup() {
   createCanvas(640, 640, WEBGL);

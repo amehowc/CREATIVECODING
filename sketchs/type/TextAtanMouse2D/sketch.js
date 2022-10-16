@@ -1,3 +1,5 @@
+// august 2019
+
 function setup() {
   createCanvas(360, 640);
   textAlign(CENTER);

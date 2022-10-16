@@ -1,3 +1,5 @@
+// august 2019
+
 const numFrames = 9 * 60;
 const numPts = 240;
 const numLines = 25;
