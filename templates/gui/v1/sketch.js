@@ -5,7 +5,7 @@ const container = document.getElementById("canvas-container");
 let img;
 function setup() {
   const canvasRatio = { width: 360, height: 640 };
-  const margins = 20;
+  const margins = 40;
   const scalefactor = scaleTo(
     canvasRatio.width,
     canvasRatio.height,
@@ -29,6 +29,7 @@ function setup() {
   buttons("buttons");
   colorpicker("colorpicker", ["#ffff00", "#ff00ff", "#00ffff", "#000"]);
   textinput("text-input");
+  textarea("text-area");
   noStroke();
   // console.log(gui)
 }
@@ -60,9 +61,15 @@ function draw() {
   pop();
 }
 
+function evaluateSize(){
+  
+
+}
+
+
 function windowResized() {
   const canvasRatio = { width: 360, height: 640 };
-  const margins = 20;
+  const margins = 40;
   const scalefactor = scaleTo(
     canvasRatio.width,
     canvasRatio.height,

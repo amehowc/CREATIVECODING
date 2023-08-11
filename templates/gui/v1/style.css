@@ -19,6 +19,12 @@ body {
   overflow: hidden;
 }
 
+#show-controls-button{
+  position:absolute;
+  left:30px;
+  top:30px;
+  }
+
 .gui-container {
   padding: 15px;
   max-width: 320px;
