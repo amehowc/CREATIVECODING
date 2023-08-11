@@ -15,12 +15,14 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: row;
   overflow: hidden;
 }
 
 .gui-container {
   padding: 15px;
-  width: 400px;
+  max-width: 320px;
+  width: 30%;
   background-color: var(--gui-background-color);
   display: flex;
   flex-direction: column;
@@ -30,7 +32,6 @@ body {
 
 .title {
   padding-top: 4px;
-  border-top: 1px solid black;
   border-bottom: 1px solid black;
   font-family: sans-serif;
   font-size: 18px;
@@ -39,7 +40,7 @@ body {
 .gui-item {
   border-top: 1px solid black;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-bottom: 10px;
 }
 
@@ -72,7 +73,7 @@ canvas {
 }
 
 .slider-elt {
-    -webkit-appearance: none;
+    
     width: 100px;
     height: var(--border-width);
     background: var(--outline-color);
@@ -172,3 +173,30 @@ a:hover {
 a:active {
   color: var(--outline-color);
 }
+
+@media only screen and (max-width: 800px) {
+    body {
+      flex-direction: column; /* Changes the body's flex direction to row */
+    }
+    
+    .gui-item {
+        padding-bottom: 5px;
+      }
+
+    .gui-container {
+      max-width: 100%;
+      padding: 25px;
+      width: auto; /* reset fixed width to be adaptive */
+      flex-direction: row; /* display child elements in a row */
+      flex-wrap: wrap; /* wrap child elements if they don't fit in a single row */
+      justify-content: space-between; /* balance space between child elements */
+    }
+  
+    .gui-container > * {
+      flex-basis: calc(50% - 10px); /* each child takes up about a third of the width, minus a little for some spacing */
+    }
+
+    .canvas-container {
+        height: 80%;
+      }
+  }

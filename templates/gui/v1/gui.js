@@ -1,11 +1,14 @@
 function importGUIComponents() {
     gui = {};
-    const guiContainer = createDiv();
-    guiContainer.addClass("gui-container");
-    guiContainer.id("gui");
+    const elt = createDiv();
+    elt.addClass("gui-container");
+    elt.id("gui");
+    const container = createDiv();
+    container.addClass("gui-item");
     pTitle = createP("Controls");
     pTitle.addClass("title");
-    pTitle.parent(guiContainer);
+    pTitle.parent(container);
+    container.parent(elt)
   
     /* templates
     
