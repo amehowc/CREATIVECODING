@@ -1,1 +1,0 @@
-![](iridescent-lemniscate-poster.png)

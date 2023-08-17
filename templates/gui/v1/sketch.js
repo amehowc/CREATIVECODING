@@ -61,12 +61,6 @@ function draw() {
   pop();
 }
 
-function evaluateSize(){
-  
-
-}
-
-
 function windowResized() {
   const canvasRatio = { width: 360, height: 640 };
   const margins = 40;

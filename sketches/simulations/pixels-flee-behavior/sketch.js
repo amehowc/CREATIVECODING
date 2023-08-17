@@ -41,11 +41,6 @@ function setup() {
 Vehicle.prototype.show = function () {
   noStroke();
   fill(0);
-  // if (this.dist > 0.5) {
-  //   fill(35, 50, 100);
-  // } else {
-  //   fill(35, 50, 100);
-  // }
   ellipse(this.pos.x, this.pos.y, this.rad);
 };
 
@@ -59,8 +54,12 @@ function draw() {
     v.behaviors();
     v.show();
   }
-  // noLoop()
-  // save()
+  if(frameCount === 60){
+    noLoop()
+    save()
+
+  }
+  
 }
 
 
