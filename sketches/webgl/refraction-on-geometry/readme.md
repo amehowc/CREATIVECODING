@@ -1,0 +1,1 @@
+![](refraction-on-geometry-poster.png)

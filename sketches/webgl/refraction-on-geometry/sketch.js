@@ -103,7 +103,7 @@ function setup() {
   ]);
   noStroke();
   setAttributes("antialias", true);
-  pixelDensity(2);
+  pixelDensity(1);
   rectMode(CENTER);
   imageMode(CENTER);
   gl = this._renderer.GL;
@@ -132,6 +132,7 @@ function draw() {
     rect(0, 0, width, -height);
   }
   pop();
+  
 }
 
 const fbo = () => {
