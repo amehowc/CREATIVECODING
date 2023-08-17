@@ -88,11 +88,6 @@ function draw() {
 
   endShape();
   pop();
-
-  if(frameCount === 1){
-    save()
-  }
-
 }
 
 function fromAngle(angle, radius, center) {
