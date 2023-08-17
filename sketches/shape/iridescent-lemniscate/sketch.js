@@ -11,6 +11,7 @@ function setup() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
+  pixelDensity(1)
   const canvasWidth = canvasRatio.width * scalefactor;
   const canvasHeight = canvasRatio.height * scalefactor;
   createCanvas(canvasWidth, canvasHeight, WEBGL, c);
@@ -18,10 +19,8 @@ function setup() {
   const elt = document.getElementById("gui");
   imageMode(CENTER);
   noStroke();
-  noStroke();
   textureMode(NORMAL);
-  imageMode(CENTER)
-  // ortho()
+  ortho(-width / 2, width / 2, height / 2, -height / 2, -5000, 5000)
   const t = "everything falls into place ";
   pg = createGraphics(1, 8 * 4); // ribbonWidth multiplied by 4
   pg.textAlign(CENTER, CENTER);
@@ -44,7 +43,7 @@ function draw() {
   background('antiquewhite');
   orbitControl()
   const progress = (frameCount % (12 * 60)) / (12 * 60);
-  const radius = pg.width-20;
+  const radius = width/2.5-20;
   const loops = InOutQuadratic(cos(progress * PI * 2) * 0.5 + 0.5) * 7;
   const tightness = 1.85;
   const step = TWO_PI / 240;
@@ -68,14 +67,14 @@ function draw() {
     const actual = knot(i, radius, tightness);
     const next = knot(i + step, radius, tightness);
     const a = -atan2(next.y - actual.y, next.x - actual.x);
-    const z = -sin((i % TWO_PI) * 4);
+    const z = -sin((i % TWO_PI) * 4)*10;
     const A = fromAngle(a, -ribbonWidth, { x: actual.x, y: actual.y }); // using 8 as ribbonWidth
     const B = fromAngle(a, ribbonWidth, { x: actual.x, y: actual.y });
 
     fill(
-      noise(i / loops + (scrollOffset/pg.width)) * 255 + z * 100,
-      noise(i / loops + step * 6 + (scrollOffset/pg.width)) * 255 + z * 100,
-      noise(i / loops + step * 12 + (scrollOffset/pg.width)) * 255 + z * 100
+      noise(i / loops + (scrollOffset/pg.width)) * 255 + z * 10,
+      noise(i / loops + step * 6 + (scrollOffset/pg.width)) * 255 + z * 10,
+      noise(i / loops + step * 12 + (scrollOffset/pg.width)) * 255 + z * 10
     );
     vertex(A.x, A.y, z, progressOnPG, 0);
     vertex(B.x, B.y, z, progressOnPG, 1);
