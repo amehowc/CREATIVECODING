@@ -121,11 +121,9 @@ function importGUIComponents() {
         if (callback) {
           dom.changed(callback);
         }
-        if (id === 0) {
+        
           gui[nameGroup + "-" + name] = dom;
-          return;
-        }
-        gui[nameGroup + "-" + name + `${id}`] = dom;
+        
       });
       container.parent(elt);
     } else {
@@ -208,11 +206,8 @@ function importGUIComponents() {
         const dom = createButton(innerText).mousePressed(callback);
         dom.addClass("button-elt");
         dom.parent(container);
-        if (id === 0) {
-          gui[name] = dom;
-          return;
-        }
-        gui[name + `${id}`] = dom;
+        
+        gui[nameGroup + "-" + name] = dom;
       });
       container.parent(elt);
     } else {
