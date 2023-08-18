@@ -12,8 +12,8 @@ function setup() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
   createCanvas(canvasWidth, canvasHeight, WEBGL, c);
   importGUIComponents();
   const elt = document.getElementById("gui");
@@ -70,7 +70,7 @@ function windowResized() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
   resizeCanvas(canvasWidth, canvasHeight);
 }

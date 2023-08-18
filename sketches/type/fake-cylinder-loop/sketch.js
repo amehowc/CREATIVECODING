@@ -12,53 +12,58 @@ function setup() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
-  createCanvas(canvasWidth, canvasHeight, WEBGL, c);
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
+  createCanvas(canvasWidth, canvasHeight, P2D, c);
   importGUIComponents();
-  const elt = document.getElementById("gui");
-  imageMode(CENTER);
-  slider("sphere-radius", [0, 1, 0.5, 0.001]);
-  sliders("sliders");
-  sliders("sliders02");
-  sliders("sliders03");
-  slider("slider02", [0, 1, 0.5, 0.001]);
-  button("button");
-  dropdown("dropdown");
-  imageUploadButton("Add Image");
-  buttons("buttons");
-  colorpicker("colorpicker", ["#ffff00", "#ff00ff", "#00ffff", "#000"]);
-  textinput("text-input");
-  textarea("text-area");
+  textAlign(CENTER,CENTER)
+  slider("copies", [1, 20, 8, 1]);
+  slider("radius", [50, width/2, 100, 1]);
+  slider("text-size", [12, 100, 48, 1]);
+  slider("spacing", [0, 2, 0.8, 0.01]);
+  textarea('text-area','hey\nyou')
+  colorpicker("colorpicker", ["black", "white"]);
   noStroke();
-  // console.log(gui)
 }
 
 function draw() {
-  const colors = [
-    gui["colorpicker"].value(),
-    gui["colorpicker1"].value(),
-    gui["colorpicker2"].value(),
-  ];
-  lights();
-  background(colors[0]);
-  if (img) {
-    const s = scaleTo(img.width, img.height, width, height);
-    push();
-    scale(s, s, 1);
-    image(img, 0, 0, img.width, img.height);
-    pop();
-  }
-  const r = gui["sphere-radius"].value();
-  const s = gui["sliders-x"].value();
-  push();
-  sphere(r * 120, 48, 48);
-  pop();
+  clear();
+  
+  const textsize = gui['text-size'].value()
+  textSize(textsize);
+  const numframes = 8 * 60;
+  const t = cos(InOutQuadratic((frameCount % numframes) / numframes) * PI);
+  const num = gui['copies'].value();
+  const radius = gui['radius'].value();
+  const verticalSpacing = textsize*gui['spacing'].value();
+  const colB = color(gui['colorpicker'].value());
+  const colA = color(gui['colorpicker1'].value());
+  background(colA);
 
-  push();
-  translate(0, 240);
-  box(s * 120, s * 120, s * 120);
-  pop();
+  translate(width / 2, -(num - 1) * (verticalSpacing));
+  for (let i = 0; i < num; i++) {
+    const words = gui['text-area'].value().split('\n').forEach((word,id,arr)=>{
+    const px = sin(t * TWO_PI + i + (TWO_PI/arr.length)*id) * radius;
+    const py = height / 2;
+    const s = InOutQuadratic(cos(t * TWO_PI + i + (TWO_PI/arr.length)*id) * 0.5 + 0.5);
+   
+    push();
+    colB.setAlpha(s*255)
+    fill(colB);
+    translate(px, py + i * (verticalSpacing)*2);
+    scale(0.5 + s);
+    text(word, 0, 0);
+    pop();
+    
+    })
+  }
+}
+
+function InOutQuadratic(p) {
+  var m = p - 1,
+    t = p * 2;
+  if (t < 1) return p * t;
+  return 1 - m * m * 2;
 }
 
 function windowResized() {
@@ -70,7 +75,7 @@ function windowResized() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
   resizeCanvas(canvasWidth, canvasHeight);
 }
