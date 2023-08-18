@@ -85,7 +85,7 @@ function draw() {
   background(15);
 
   const numframes = 6 * 60
-  const progress = (frameCount / numframes) % 1 * TWO_PI
+  const progress = frameCount * 0.03
 
   if (pg.width !== width) {
     pg.resizeCanvas(width, height);
