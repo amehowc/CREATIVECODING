@@ -61,19 +61,7 @@ function setup() {
     },
   ]);
   imageUploadButton('upload-image')
-  // sliders("sliders");
-  // sliders("sliders02");
-  // sliders("sliders03");
-  // slider("slider02", [0, 1, 0.5, 0.001]);
-  // button("button");
-  // dropdown("dropdown");
-  // imageUploadButton("Add Image");
-  // buttons("buttons");
-  // colorpicker("colorpicker", ["#ffff00", "#ff00ff", "#00ffff", "#000"]);
-  // textinput("text-input");
-  // textarea("text-area");
   noStroke();
-  // console.log(gui)
 }
 
 function draw() {
