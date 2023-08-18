@@ -16,53 +16,56 @@ function setup() {
   const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
   createCanvas(canvasWidth, canvasHeight, P2D, c);
   importGUIComponents();
-  textAlign(CENTER,CENTER)
+  textAlign(CENTER, CENTER);
   slider("copies", [1, 20, 8, 1]);
-  slider("radius", [50, width/2, 100, 1]);
+  slider("radius", [50, width / 2, 100, 1]);
   slider("text-size", [12, 100, 48, 1]);
   slider("spacing", [0, 2, 0.8, 0.01]);
   slider("offset", [0, PI, 1, 0.01]);
-  textarea('text-area','hey\nyou')
-  button('save-button','save',()=>{save()})
+  textarea("text-area", "hey\nyou");
+  button("save-button", "save", () => {
+    save();
+  });
   colorpicker("colorpicker", ["black", "white"]);
   noStroke();
 }
 
 function draw() {
   clear();
-  
-  const textsize = gui['text-size'].value()
+
+  const textsize = gui["text-size"].value();
   textSize(textsize);
   const numframes = 8 * 60;
   const t = cos(InOutQuadratic((frameCount % numframes) / numframes) * PI);
-  const num = gui['copies'].value();
-  const radius = gui['radius'].value();
-  const offset = gui['offset'].value();
-  const verticalSpacing = textsize*gui['spacing'].value();
-  const colB = color(gui['colorpicker'].value());
-  const colA = color(gui['colorpicker1'].value());
+  const num = gui["copies"].value();
+  const radius = gui["radius"].value();
+  const offset = gui["offset"].value();
+  const verticalSpacing = textsize * gui["spacing"].value();
+  const colB = color(gui["colorpicker"].value());
+  const colA = color(gui["colorpicker1"].value());
   background(colA);
 
-  translate(width / 2, -(num - 1) * (verticalSpacing));
+  translate(width / 2, -(num - 1) * verticalSpacing);
   for (let i = 0; i < num; i++) {
-    const words = gui['text-area'].value().split('\n').forEach((word,id,arr)=>{
-    const px = sin(t * TWO_PI + i * offset + (TWO_PI/arr.length)*id) * radius;
-    const py = height / 2;
-    const s = InOutQuadratic(cos(t * TWO_PI + i* offset + (TWO_PI/arr.length)*id) * 0.5 + 0.5);
-   
-    push();
-    colB.setAlpha(s*255)
-    fill(colB);
-    translate(px, py + i * (verticalSpacing)*2);
-    scale(0.5 + s);
-    text(word, 0, 0);
-    pop();
-    
-    })
+    const words = gui["text-area"]
+      .value()
+      .split("\n")
+      .forEach((word, id, arr) => {
+        const px =
+          sin(t * TWO_PI + i * offset + (TWO_PI / arr.length) * id) * radius;
+        const py = height / 2;
+        const s = InOutQuadratic(
+          cos(t * TWO_PI + i * offset + (TWO_PI / arr.length) * id) * 0.5 + 0.5
+        );
+        push();
+        colB.setAlpha(s * 255);
+        fill(colB);
+        translate(px, py + i * verticalSpacing * 2);
+        scale(0.5 + s);
+        text(word, 0, 0);
+        pop();
+      });
   }
-
-  
-
 }
 
 function InOutQuadratic(p) {
