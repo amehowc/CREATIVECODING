@@ -180,7 +180,7 @@ a:active {
   color: var(--outline-color);
 }
 
-@media only screen and (max-width: 800px) {
+@media(max-width: 1000px){
     body {
       flex-direction: column; /* Changes the body's flex direction to row */
     }
@@ -192,10 +192,11 @@ a:active {
     .gui-container {
       max-width: 100%;
       padding: 25px;
-      width: auto; /* reset fixed width to be adaptive */
-      flex-direction: row; /* display child elements in a row */
-      flex-wrap: wrap; /* wrap child elements if they don't fit in a single row */
-      justify-content: space-between; /* balance space between child elements */
+      width: auto; 
+      flex-direction: row; 
+      flex-wrap: wrap; 
+      justify-content: space-between; 
+      background-color: aqua;
     }
   
     .gui-container > * {
