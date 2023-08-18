@@ -21,7 +21,9 @@ function setup() {
   slider("radius", [50, width/2, 100, 1]);
   slider("text-size", [12, 100, 48, 1]);
   slider("spacing", [0, 2, 0.8, 0.01]);
+  slider("offset", [0, PI, 1, 0.01]);
   textarea('text-area','hey\nyou')
+  button('save-button','save',()=>{save()})
   colorpicker("colorpicker", ["black", "white"]);
   noStroke();
 }
@@ -35,6 +37,7 @@ function draw() {
   const t = cos(InOutQuadratic((frameCount % numframes) / numframes) * PI);
   const num = gui['copies'].value();
   const radius = gui['radius'].value();
+  const offset = gui['offset'].value();
   const verticalSpacing = textsize*gui['spacing'].value();
   const colB = color(gui['colorpicker'].value());
   const colA = color(gui['colorpicker1'].value());
@@ -43,9 +46,9 @@ function draw() {
   translate(width / 2, -(num - 1) * (verticalSpacing));
   for (let i = 0; i < num; i++) {
     const words = gui['text-area'].value().split('\n').forEach((word,id,arr)=>{
-    const px = sin(t * TWO_PI + i + (TWO_PI/arr.length)*id) * radius;
+    const px = sin(t * TWO_PI + i * offset + (TWO_PI/arr.length)*id) * radius;
     const py = height / 2;
-    const s = InOutQuadratic(cos(t * TWO_PI + i + (TWO_PI/arr.length)*id) * 0.5 + 0.5);
+    const s = InOutQuadratic(cos(t * TWO_PI + i* offset + (TWO_PI/arr.length)*id) * 0.5 + 0.5);
    
     push();
     colB.setAlpha(s*255)
@@ -57,6 +60,9 @@ function draw() {
     
     })
   }
+
+  
+
 }
 
 function InOutQuadratic(p) {
