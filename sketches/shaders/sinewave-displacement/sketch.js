@@ -12,8 +12,8 @@ function setup() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight =  Math.floor(canvasRatio.height * scalefactor);
   createCanvas(canvasWidth, canvasHeight, WEBGL, c);
   importGUIComponents();
   slider("repeats", [1, 8, 3, 1], () => {});
@@ -84,6 +84,9 @@ function draw() {
   clear();
   background(15);
 
+  const numframes = 6 * 60
+  const progress = (frameCount / numframes) % 1 * TWO_PI
+
   if (pg.width !== width) {
     pg.resizeCanvas(width, height);
   }
@@ -98,7 +101,7 @@ function draw() {
     slope: [gui["slope-x"].value(), gui["slope-y"].value()],
     texture: img ? img : pg,
     resolution: [width * pixelDensity(), height * pixelDensity()],
-    time: frameCount * 0.05,
+    time: progress,
     repeats: gui["repeats"].value(),
   };
   createUniforms(shade, uniforms);
@@ -117,7 +120,7 @@ function windowResized() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
   resizeCanvas(canvasWidth, canvasHeight);
 }

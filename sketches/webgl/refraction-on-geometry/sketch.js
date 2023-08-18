@@ -60,8 +60,8 @@ function setup() {
     container.clientWidth - margins * 2,
     container.clientHeight - margins * 2
   );
-  const canvasWidth = canvasRatio.width * scalefactor;
-  const canvasHeight = canvasRatio.height * scalefactor;
+  const canvasWidth = Math.floor(canvasRatio.width * scalefactor);
+  const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
   createCanvas(canvasWidth, canvasHeight, WEBGL, c);
   importGUIComponents();
   const elt = document.getElementById("gui");
@@ -120,7 +120,6 @@ function draw() {
   clear();
   background("#f0f0f0");
   fbo();
-
   push();
   texture(pg);
   rect(0, 0, pg.width, pg.height);
@@ -141,6 +140,8 @@ const fbo = () => {
   buffer.draw(() => {
     clear();
     push();
+
+
 
     const uniforms = {
       uIorR: gui["colors-range-red"].value() * 2.5,
