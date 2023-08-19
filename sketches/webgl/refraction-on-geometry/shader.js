@@ -122,7 +122,7 @@ vec4 sampleBackground(vec3 normal, sampler2D bg) {
 }
 
 vec4 remapShadows(vec4 color) {
-  float factor = 10.;
+  float factor = 8.;
   return vec4(
     pow(color.x, factor),
     pow(color.y, factor),
@@ -140,7 +140,7 @@ void main(){
 
   vec2 uv = gl_FragCoord.xy / resolution.xy;
   uv.y = 1.-uv.y;
-  vec3 normal = normalize(vertNormal);
+  vec3 normal = (vertNormal);
   vec3 color = vec3(0.0);
   vec3 eye = vec3(0.0,0.0,-1.);
   // Add specular light
@@ -259,18 +259,18 @@ mat4 rotateZ(float angle) {
   );
 }
     void main() {
-      vec4 p = vec4(aPosition, 1.0)*rotateY(-time*2.)*rotateX(time);
-      vec4 n = vec4(aNormal, 1.0)*rotateY(-time*2.)*rotateX(time);
+      vec4 p = vec4(aPosition, 1.0)*rotateZ(-time*2.)*rotateX(time)*rotateZ(-time);
+      vec4 n = vec4(aNormal, 1.0)*rotateZ(-time*2.)*rotateX(time)*rotateZ(-time);
       gl_Position = uProjectionMatrix *
                     uModelViewMatrix *
                     p;
 
 
-      vertPos      = aPosition;
-      vertNormal   = n.xyz;
-      vertNormalMatrix = aNormal * uNormalMatrix;
+      vertPos      = p.xyz;
+      vertNormal   = normalize(n.xyz * uNormalMatrix);
+      vertNormalMatrix = vertNormal * uNormalMatrix;
       vertTexCoord = aTexCoord;
-      vec4 positionEye = uModelViewMatrix * p;
+      vec4 positionEye = (uModelViewMatrix * p);
       eye = normalize(positionEye.xyz);
     }
 `;

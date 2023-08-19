@@ -66,6 +66,7 @@ function setup() {
   importGUIComponents();
   const elt = document.getElementById("gui");
   imageMode(CENTER);
+  dropdown("geometry", ["donut", "sphere", "cube", "cylinder"]);
   slider("refraction", [0, 1, 0.5, 0.001]);
   slider("aberration", [0, 2, 0.5, 0.001]);
   slider("fresnel", [0, 1, 0.5, 0.001]);
@@ -131,7 +132,6 @@ function draw() {
     rect(0, 0, width, -height);
   }
   pop();
-  
 }
 
 const fbo = () => {
@@ -140,8 +140,6 @@ const fbo = () => {
   buffer.draw(() => {
     clear();
     push();
-
-
 
     const uniforms = {
       uIorR: gui["colors-range-red"].value() * 2.5,
@@ -164,11 +162,21 @@ const fbo = () => {
 
     shader(buffer_shader);
     createUniforms(buffer_shader, uniforms);
-    // cylinder(100,100,48,48)
-    // sphere(140,48,48)
     scale(0.85);
-    torus(200, 100, 48, 48);
-    // box(200,200,48,48)
+    switch (gui["geometry"].value()) {
+      case "donut":
+        torus(200, 100, 48, 48);
+        break;
+      case "sphere":
+        sphere(300, 56,56);
+        break;
+      case "cube":
+        box(300, 300, 300, 48, 48);
+        break;
+      case "cylinder":
+        cylinder(200,400)
+        break;
+    }    
     pop();
   });
 };

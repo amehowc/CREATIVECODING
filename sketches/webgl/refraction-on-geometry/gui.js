@@ -222,7 +222,7 @@ function importGUIComponents() {
     name,
     settings = ["A", "B", "C", "D"],
     callback = () => {
-      console.log(name + " is changed");
+      
     }
   ) => {
     const elt = document.getElementById("gui");
