@@ -1,0 +1,1 @@
+![](bulge-refraction-poster.png)

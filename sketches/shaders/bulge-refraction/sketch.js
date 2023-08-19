@@ -161,7 +161,7 @@ function draw() {
   background(220);
   noStroke();
 
-  mouse =
+  const mouse =
     mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height
       ? [
          cos(frameCount*0.01)*.25+.5,
