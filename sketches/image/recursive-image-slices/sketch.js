@@ -51,12 +51,7 @@ function setup() {
     },
     {
       name: "strength",
-      settings: [0, 1, 0.5, 0.001],
-      callback: () => {},
-    },
-    {
-      name: "magenta",
-      settings: [0, 1, 0.5, 0.001],
+      settings: [0, 1, 0.75, 0.001],
       callback: () => {},
     },
   ]);
