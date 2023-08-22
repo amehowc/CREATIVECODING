@@ -36,18 +36,16 @@ const sketch = (p) => {
     const canvasHeight = Math.floor(canvasRatio.height * scalefactor);
     p.createCanvas(canvasWidth, canvasHeight, p.P2D, c);
     pg = p.createGraphics(p.width,p.height)
-    pg.background('red')
-    setupGUI()
-  };
-
-  p.draw = () => {
-    const r = gui["sphere-radius"].value() * 200;
     pg.reset()
     pg.background('blue')
     pg.translate(pg.width / 2, pg.height / 2);
-    pg.ellipse(0, 0, r);
-    const picked =  uploadedImage ? uploadedImage : pg
-    p.image(picked,0,0,p.width,p.height)
+    pg.ellipse(0, 0, 200);
+    // setupGUI()
+  };
+
+  p.draw = () => {
+    // const r = gui["sphere-radius"].value() * 200;
+    p.image(pg,0,0,p.width,p.height)
   };
 
   p.windowResized = () => {
