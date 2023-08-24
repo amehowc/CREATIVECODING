@@ -40,7 +40,6 @@ function RoundedRect(x, y, r, anchor = "bottom") {
     this.radius = 100;
     this.definition = 48;
     this.update = (_width, _height, _radius, _anchor = "none") => {
-        const minSize = Math.min(this.maxWidth, this.maxHeight) * 0.5;
         const containerW = p5.constrain(_width, 0, this.maxWidth);
         const containerH = p5.constrain(_height, 0, this.maxHeight);
         const heightExcess = Math.max(0, _height - this.maxHeight);
@@ -183,7 +182,7 @@ function RoundedRect(x, y, r, anchor = "bottom") {
         //     }
         // });
         p5.push();
-        p5.noFill();
+        // p5.noFill();
         p5.beginShape();
         this.centers.forEach((point, index) => {
             if (point.z === 0) {
@@ -252,6 +251,7 @@ const sketch = (p) => {
         p.textureMode(p.NORMAL);
         pg = p.createGraphics(p.width, p.height);
         pg.background("red");
+        pg.ellipse(pg.width/2,pg.height/2,100)
         setupGUI();
 
         rec = new RoundedRect(p.width / 2, p.height, 100);
@@ -259,7 +259,6 @@ const sketch = (p) => {
     };
 
     p.draw = () => {
-        // const r = gui["sphere-radius"].value() * 200;
         p.background(220);
         rec.update(
             gui["width"].value() * p.width,
@@ -268,7 +267,7 @@ const sketch = (p) => {
             gui["anchors"].value()
         );
         p.push();
-        // p.texture(pg);
+        p.texture(pg);
         rec.show();
         p.pop();
     };
