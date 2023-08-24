@@ -3,12 +3,10 @@ import { scaleTo } from "./helpers.js";
 
 const c = document.getElementById("canvas");
 const container = document.getElementById("canvas-container");
-// let p5;
 const setupGUI = () => {
     dom.initializeGUI();
     dom.slider("width", [0, 2, 0.5, 0.001]);
     dom.slider("height", [0, 2, 0.5, 0.001]);
-    dom.slider("radius", [0, 1, 0.5, 0.001]);
     dom.dropdown(
         "anchors",
         ["bottom", "left", "top", "right", "none"],
@@ -33,13 +31,19 @@ function RoundedRect(x, y, r, anchor = "bottom") {
         [1, 1],
         [-1, 1],
     ];
+    this.uvs = [
+      [0, 1],
+      [1, 1],
+      [1, 0],
+      [0, 0],
+  ];
     this.margins = 10;
     this.maxWidth = p5.width - this.margins * 2;
     this.maxHeight = p5.height - this.margins * 2;
 
     this.radius = 100;
     this.definition = 48;
-    this.update = (_width, _height, _radius, _anchor = "none") => {
+    this.update = (_width, _height, _anchor = "none") => {
         const containerW = p5.constrain(_width, 0, this.maxWidth);
         const containerH = p5.constrain(_height, 0, this.maxHeight);
         const heightExcess = Math.max(0, _height - this.maxHeight);
@@ -152,44 +156,34 @@ function RoundedRect(x, y, r, anchor = "bottom") {
         });
     };
     this.show = () => {
-        // this.corners.forEach((corner, index) => {
-        //     const x = corner.x;
-        //     const y = corner.y;
-        //     p5.push();
-        //     p5.fill("red");
-        //     p5.ellipse(x, y, 10);
-        //     p5.pop();
-        // });
-
-        // this.centers.forEach((center, index) => {
-        //     const x = center.x;
-        //     const y = center.y;
-        //     const isAnchored = center.z;
-        //     if (!isAnchored) {
-        //         const x = this.corners[index].x;
-        //         const y = this.corners[index].y;
-        //         p5.push();
-        //         p5.fill("green");
-        //         p5.ellipse(x, y, 10);
-        //         p5.pop();
-        //     } else {
-        //         const x = center.x;
-        //         const y = center.y;
-        //         p5.push();
-        //         p5.fill("blue");
-        //         p5.ellipse(x, y, 10);
-        //         p5.pop();
-        //     }
-        // });
+        
         p5.push();
-        // p5.noFill();
+        
         p5.beginShape();
         this.centers.forEach((point, index) => {
             if (point.z === 0) {
                 const x = this.corners[index].x;
                 const y = this.corners[index].y;
-                const u = Math.max(0, this.indices[index][0]);
-                const v = Math.max(0, this.indices[index][1]);
+                let u = 0;
+                let v = 0;
+                if (this.maxWidth > 0 && this.maxHeight > 0) {
+                  u = p5.map(
+                      x,
+                      -this.maxWidth / 2,
+                      this.maxWidth / 2,
+                      0,
+                      1,
+                      true
+                  );
+                  v = p5.map(
+                      y,
+                      -this.maxHeight / 2,
+                      this.maxHeight / 2,
+                      0,
+                      1,
+                      true
+                  );
+              }
                 p5.vertex(x, y, 0, u, v);
             } else {
                 for (let i = 0; i < this.definition; i++) {
@@ -236,7 +230,11 @@ function RoundedRect(x, y, r, anchor = "bottom") {
 const sketch = (p) => {
     const margins = 40;
     const canvasRatio = { width: 360, height: 640 };
-    let pg, rec;
+    let pg, rec,img;
+
+    p.preload=()=>{
+      img = p.loadImage('flowers_03.png')
+    }
 
     p.setup = () => {
         const scalefactor = scaleTo(
@@ -251,9 +249,12 @@ const sketch = (p) => {
         p.textureMode(p.NORMAL);
         pg = p.createGraphics(p.width, p.height);
         pg.background("red");
-        pg.ellipse(pg.width/2,pg.height/2,100)
+        pg.noStroke()
+        img.resize(0,p.height)
+        pg.image(img,0,0,pg.width,pg.height)
+        // pg.ellipse(pg.width/2,pg.height/2,100)
         setupGUI();
-
+        p.noStroke()
         rec = new RoundedRect(p.width / 2, p.height, 100);
         console.log(rec);
     };
@@ -263,7 +264,6 @@ const sketch = (p) => {
         rec.update(
             gui["width"].value() * p.width,
             gui["height"].value() * p.height,
-            gui["radius"].value() * Math.min(p.width, p.height),
             gui["anchors"].value()
         );
         p.push();
