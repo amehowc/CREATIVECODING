@@ -8,6 +8,7 @@ import { textareaComponent } from "./components/textarea.js";
 import { creditsComponent } from "./components/credits.js";
 import { paragraphComponent } from "./components/paragraph.js";
 import { imageUploadComponent } from "./components/imageUpload.js";
+import { checkboxComponent } from "./components/checkbox.js";
 
 export const gui = {};
 export const slider = sliderComponent;
@@ -20,6 +21,7 @@ export const textarea = textareaComponent;
 export const credits = creditsComponent;
 export const paragraph = paragraphComponent;
 export const imageUpload = imageUploadComponent;
+export const checkbox = checkboxComponent
 
 export const initializeGUI = (sketch, name = "Controls") => {
   const elt = p5.createDiv();

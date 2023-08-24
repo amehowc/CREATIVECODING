@@ -142,17 +142,6 @@ function setup() {
   slider("noise-refraction", [0, 0.1, 0.01, 0.001]);
   slider("noise-color", [0, 0.05, 0.01, 0.001]);
   imageUploadButton('image-upload')
-  // sliders("sliders");
-  // sliders("sliders02");
-  // sliders("sliders03");
-  // slider("slider02", [0, 1, 0.5, 0.001]);
-  // button("button");
-  // dropdown("dropdown");
-  // imageUploadButton("Add Image");
-  // buttons("buttons");
-  // colorpicker("colorpicker", ["#ffff00", "#ff00ff", "#00ffff", "#000"]);
-  // textinput("text-input");
-  // textarea("text-area");
   noStroke();
   renderShader = createShader(rendervert, renderfrag);
 }
