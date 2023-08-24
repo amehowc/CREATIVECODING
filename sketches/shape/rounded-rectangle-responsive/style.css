@@ -79,6 +79,10 @@ canvas {
   display: block;
 }
 
+.checkbox-elt {
+ padding-top: 10px;
+}
+
 .slider-elt {
   -webkit-appearance: none; /* Override default look */
   appearance: none;

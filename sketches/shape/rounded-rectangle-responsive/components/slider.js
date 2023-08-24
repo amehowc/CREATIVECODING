@@ -9,6 +9,7 @@ export const sliderComponent = (
     // console.log(name + " has been changed");
   }
 ) => {
+  console.log(gui)
   const elt = document.getElementById("gui");
   if (!gui[name]) {
     const container = p5.createDiv();
