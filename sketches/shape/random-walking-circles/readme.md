@@ -2,4 +2,4 @@
 
 Inspired by : https://publicdomainreview.org/collection/maps-of-the-lower-mississippi-harold-fisk/
 
-![](/poster.png)
+![](/sketches/shape/random-walking-circles/poster.png)
