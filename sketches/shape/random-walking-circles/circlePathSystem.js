@@ -1,4 +1,4 @@
-const randomPositions = false
+const randomPositions = false;
 
 function rgbToHex(rgb) {
     if (rgb.length !== 3) {
@@ -114,48 +114,78 @@ function CirclePath() {
 
     this.outOfBounds = (c) => {
         return (
-            c.cx - c.radius - this.minDist * 0.5 < 0 ||
-            c.cx + c.radius + this.minDist * 0.5 > p5.width ||
-            c.cy - c.radius + this.minDist * 0.5 < 0 ||
-            c.cy + c.radius - this.minDist * 0.5 > p5.height
+            c.cx - c.radius - this.minDist * 0.25 < 0 ||
+            c.cx + c.radius + this.minDist * 0.25 > p5.width ||
+            c.cy - c.radius + this.minDist * 0.25 < 0 ||
+            c.cy + c.radius - this.minDist * 0.25 > p5.height
         );
+    };
+
+    this.getPoints = (_points) => {
+        const definition = (p5.TWO_PI * 1) / this.minRadius;
+
+        const points = _points.map((circle, index, circles) => {
+            const pointsOnCircles = [];
+            const c = circle;
+            const nc = circles.at((index + 1) % circles.length);
+            const angle_in = p5.atan2(c.cy - c.inY, c.cx - c.inX);
+            const angle_out = p5.atan2(c.cy - nc.inY, c.cx - nc.inX);
+            let ai = p5.map(angle_in, -p5.PI, p5.PI, 0, p5.TWO_PI);
+            let ao = p5.map(angle_out, -p5.PI, p5.PI, 0, p5.TWO_PI);
+
+            if (index % 2 === 0) {
+                if (ao < ai) ao += p5.TWO_PI;
+                for (let i = ai; i < ao; i += definition) {
+                    const x = c.cx + Math.cos(i) * c.radius;
+                    const y = c.cy + Math.sin(i) * c.radius;
+                    pointsOnCircles.push(p5.createVector(x, y));
+                }
+            } else {
+                if (ai < ao) ai += p5.TWO_PI;
+
+                for (let i = ai; i > ao; i -= definition) {
+                    const x = c.cx + Math.cos(i) * c.radius;
+                    const y = c.cy + Math.sin(i) * c.radius;
+
+                    pointsOnCircles.push(p5.createVector(x, y));
+                }
+            }
+
+            return pointsOnCircles;
+        });
+
+        return points;
     };
 
     this.render = (pathColor) => {
         let previous;
-        for (var i = 0; i < this.circles.length; i++) {
-            const c = this.circles[i];
-            p5.noFill();
-            p5.stroke(238, 150);
-            p5.strokeWeight(1);
-            if (i > 0 && this.show) {
-                p5.ellipse(c.cx, c.cy, c.radius * 2, c.radius * 2);
-                previous = this.circles[i - 1];
-                p5.line(previous.cx, previous.cy, c.cx, c.cy);
-                p5.ellipse(c.cx, c.cy, 5, 5);
-                p5.ellipse(c.inX, c.inY, 10, 10);
-            }
-        }
-        for (var i = 0; i < this.circles.length; i++) {
-            const c = this.circles[i];
-            if (i < this.circles.length - 1) {
-                var nc = this.circles[i + 1];
-                var angle_in = p5.atan2(c.cy - c.inY, c.cx - c.inX);
-                var angle_out = p5.atan2(c.cy - nc.inY, c.cx - nc.inX);
-                var ai = p5.map(angle_in, -p5.PI, p5.PI, 0, p5.TWO_PI);
-                var ao = p5.map(angle_out, -p5.PI, p5.PI, 0, p5.TWO_PI);
-                p5.strokeCap(p5.SQUARE);
-                p5.strokeWeight(this.minDist * 2);
-                p5.stroke(pathColor);
-                if (i % 2 === 0) {
-                    if (ao < ai) ao += p5.TWO_PI;
-                    p5.arc(c.cx, c.cy, c.radius * 2, c.radius * 2, ai, ao);
-                } else {
-                    if (ai < ao) ai += p5.TWO_PI;
-                    p5.arc(c.cx, c.cy, c.radius * 2, c.radius * 2, ao, ai);
-                }
-            }
-        }
+        p5.noFill();
+        // for (var i = 0; i < this.circles.length; i++) {
+        //     const c = this.circles[i];
+        //     p5.noFill();
+        //     p5.stroke(238, 150);
+        //     p5.strokeWeight(1);
+        //     if (i > 0 && this.show) {
+        //         p5.ellipse(c.cx, c.cy, c.radius * 2, c.radius * 2);
+        //         previous = this.circles[i - 1];
+        //         p5.line(previous.cx, previous.cy, c.cx, c.cy);
+        //         p5.ellipse(c.cx, c.cy, 5, 5);
+        //         p5.ellipse(c.inX, c.inY, 10, 10);
+        //     }
+        // }
+
+        const points = this.getPoints(this.circles);
+        p5.push();
+        p5.stroke(pathColor);
+        p5.strokeWeight(this.minDist*2);
+        p5.strokeCap(p5.SQUARE)
+        p5.beginShape();
+        const circles = points.flat().map((point) => {
+            p5.vertex(point.x, point.y);
+            return;
+        });
+        p5.endShape();
+        p5.pop();
     };
 }
 
@@ -218,11 +248,9 @@ function CirclePathSystem() {
                 if (path.circles.length < path.num && path.canAddMoreCircles) {
                     path.addCircle();
                 }
-                // console.log(path.circles.length)
             });
 
             if (this.isComplete()) {
-                // console.log("all done");
                 this.allDone = true;
                 this.longestPath = this.paths[this.getLongestPath()];
             }
@@ -237,12 +265,15 @@ function CirclePathSystem() {
                 this.longestPath.render("#000");
             }
         } else {
-            // console.log('hey')
             p5.push();
             p5.noStroke();
             p5.fill(0);
-            p5.textAlign(p5.CENTER,p5.CENTER);
-            p5.text("Computer is computing ...\n🤖", p5.width / 2, p5.height / 2);
+            p5.textAlign(p5.CENTER, p5.CENTER);
+            p5.text(
+                "Computer is computing ...\n🤖",
+                p5.width / 2,
+                p5.height / 2
+            );
             p5.pop();
         }
     };
