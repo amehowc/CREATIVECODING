@@ -37,6 +37,9 @@ const sketch = (p) => {
     p.background('antiquewhite');
     circleSystem.run();
     circleSystem.show();
+    // p.noLoop()
+    if ( circleSystem.canAddMoreCircles === false) p.noLoop()
+    
   };
 
   p.windowResized = () => {
