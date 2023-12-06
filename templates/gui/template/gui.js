@@ -34,19 +34,19 @@ export const initializeGUI = (sketch, name = "Controls") => {
   pTitle.parent(container);
   container.parent(elt);
   const canvas = document.getElementById("canvas-container");
-  const dom = p5.createButton("Show Controls");
-  dom.mousePressed(() => {
-    const elt = document.getElementById("gui");
-    const btn = document.getElementById("show-controls-button");
-    if (window.getComputedStyle(elt).display === "flex") {
-      elt.style.display = "none";
-      dom.innerhtml = "Show Controls";
-    } else {
-      elt.style.display = "flex";
-      dom.innerhtml = "Hide Controls";
-    }
-  });
-  dom.id("show-controls-button");
-  dom.addClass("button-elt");
-  dom.parent(canvas);
+  // const dom = p5.createButton("Hide Controls");
+  // dom.mousePressed(() => {
+  //   const elt = document.getElementById("gui");
+  //   const btn = document.getElementById("show-controls-button");
+  //   if (window.getComputedStyle(elt).display === "flex") {
+  //     elt.style.display = "none";
+  //     dom.innerhtml = "Show Controls";
+  //   } else {
+  //     elt.style.display = "flex";
+  //     dom.innerhtml = "Show Controls";
+  //   }
+  // });
+  // dom.id("show-controls-button");
+  // dom.addClass("button-elt");
+  // dom.parent(canvas);
 };
