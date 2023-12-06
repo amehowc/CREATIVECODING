@@ -58,8 +58,8 @@ function draw() {
           cos(t * TWO_PI + i * offset + (TWO_PI / arr.length) * id) * 0.5 + 0.5
         );
         push();
-        colB.setAlpha(s * 255);
-        fill(colB);
+        const colC = lerpColor(colA,colB,s)
+        fill(colC);
         translate(px, py + i * verticalSpacing * 2);
         scale(0.5 + s);
         text(word, 0, 0);
